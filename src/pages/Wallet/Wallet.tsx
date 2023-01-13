@@ -1,30 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Contract, getDefaultProvider, ethers } from "ethers";
+import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import SalesCard from "../../components/SalesCard/SalesCard";
 import Footer from "../../components/Footer/Footer";
-import contractAbi from "../../bscscanAbi.json";
+import TransactionContext, {
+  TransactionContextType,
+} from "../../context/TransactionContext";
 
 const Wallet = () => {
-  const [balance, setBalance] = useState<string>();
-  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-  const abi = contractAbi;
-  const provider =  ethers.providers.getDefaultProvider("ropsten");
-  const provider2 =  new ethers.providers.JsonRpcProvider("https://testnet.bscscan.com");
-  const bscContract = new Contract(contractAddress, abi, provider);
-
-  async function getBalance() {
-    const signer = provider2.getSigner();
-    const signerAddress = await signer.getAddress();
-    const balance = await bscContract.balanceOf(signerAddress);
-    setBalance(balance);
-    console.log(balance);
-  }
-
-  useEffect(() => {
-    getBalance();
-  }, []);
-
   return (
     <React.Fragment>
       <Navbar />
@@ -91,7 +73,7 @@ const Wallet = () => {
         </div>
 
         <div className="col-span-5">
-          <SalesCard balance={balance} />
+          <SalesCard />
         </div>
       </section>
 

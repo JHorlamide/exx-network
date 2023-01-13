@@ -2,26 +2,30 @@ import "tw-elements";
 import CustomBtn from "../CustomBtn/CustomBtn";
 import Input from "../Input/Input";
 import { useForm } from "react-hook-form";
+import TransactionContext, {
+  TransactionContextType,
+} from "../../context/TransactionContext";
+import React from "react";
 
-export interface SalesCardProps {
-  balance: string | undefined;
-}
+const SalesCard = () => {
+  const { buy, balance } = React.useContext(
+    TransactionContext
+  ) as TransactionContextType;
 
-const SalesCard = ({ balance }: SalesCardProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit(({ amount }) => {
-    console.log(amount);
+  const onSubmit = handleSubmit(() => {
+    buy();
   });
 
   return (
     <div className="flex flex-col space-y-3">
       <div className="hidden md:block bg-light-blue w-fit px-4 py-3 rounded-md text-blue">
-        <p className="text-xs">Your bal: {balance ?? "0.0000000 USDT"}</p>
+        <p className="text-xs">Your bal: {balance} USDT</p>
       </div>
 
       <div className="bg-white px-2 py-4 flex flex-col space-y-6 w-full rounded-lg md:px-5 md:justify-center">
@@ -53,14 +57,16 @@ const SalesCard = ({ balance }: SalesCardProps) => {
           >
             <div className="relative col-span-9">
               <Input
-                type="text"
+                type="number"
                 id="amount"
                 label="Enter amount to buy"
                 errors={errors}
                 register={register}
-                required={true}
                 placeholder="00.00 USDT"
+                required={true}
                 validationSchema={{
+                  min: 30,
+                  max: 10000,
                   required: "Amount is required",
                 }}
                 className="-mt-4 py-3 px-3 w-full border border-blue rounded-[10px] focus:border-blue"
@@ -68,7 +74,7 @@ const SalesCard = ({ balance }: SalesCardProps) => {
                 containerClassName="space-y-2"
               />
 
-              <div className="hidden lg:flex space-x-2 absolute inset-y-0 right-4 top-[45px]">
+              <div className="hidden lg:flex space-x-2 absolute inset-y-0 right-12 top-[45px]">
                 <hr className="border-gray rotate-90 w-6 mt-[0.7rem]" />
                 <p className="text-gray">00.00 EXX</p>
               </div>
