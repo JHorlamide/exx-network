@@ -2,14 +2,9 @@ import { describe, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import SalesCard from "./SalesCard";
 
-const mockBalance = "0.00008";
-const MockSalesCard = () => {
-  return <SalesCard balance={mockBalance} />;
-};
-
 describe("the SalesCard component", function () {
   it("should render the card component correctly", function () {
-    render(<MockSalesCard />);
+    render(<SalesCard />);
     const paragraphElement = screen.getByText(/disclaimer/i);
     const paragraphElement2 = screen.getByText(
       /The information provided shall/i
@@ -19,14 +14,14 @@ describe("the SalesCard component", function () {
   });
 
   it("should render input field correctly", () => {
-    render(<MockSalesCard />);
+    render(<SalesCard />);
     const inputElement = screen.getByTestId("amount-input");
     expect(inputElement).toBeInTheDocument();
   });
 
   it("should be able to type in the input field", () => {
     const inputValue = "00.009";
-    render(<MockSalesCard />);
+    render(<SalesCard />);
 
     const inputElement = screen.getByTestId(
       "amount-input"
@@ -41,7 +36,7 @@ describe("the SalesCard component", function () {
 
   it("Should show input field value when the button is clicked", () => {
     const inputValue = "00.08";
-    render(<MockSalesCard />);
+    render(<SalesCard />);
 
     const inputElement = screen.getByPlaceholderText(
       /00.00 USDT/i
